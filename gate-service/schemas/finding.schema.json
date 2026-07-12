@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BLACKBOX Canonical Finding",
+  "type": "object",
+  "additionalProperties": false,
+
+  "required": [
+    "finding_id",
+    "source_tool",
+    "category",
+    "severity",
+    "title",
+    "description",
+    "service",
+    "commit_sha",
+    "environment",
+    "detected_at",
+    "status",
+    "raw_scanner_output"
+  ],
+
+  "properties": {
+    "finding_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+
+    "source_tool": {
+      "type": "string",
+      "enum": [
+        "trivy",
+        "gitleaks",
+        "semgrep",
+        "syft"
+      ]
+    },
+
+    "category": {
+      "type": "string",
+      "enum": [
+        "secret",
+        "sast",
+        "sca",
+        "iac",
+        "container"
+      ]
+    },
+
+    "severity": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "info"
+      ]
+    },
+
+    "cve_id": {
+      "type": ["string","null"]
+    },
+
+    "epss_score": {
+      "type": ["number","null"]
+    },
+
+    "title": {
+      "type": "string"
+    },
+
+    "description": {
+      "type": "string"
+    },
+
+    "file_path": {
+      "type": ["string","null"]
+    },
+
+    "line_number": {
+      "type": ["integer","null"]
+    },
+
+    "package_name": {
+      "type": ["string","null"]
+    },
+
+    "package_version": {
+      "type": ["string","null"]
+    },
+
+    "fixed_version": {
+      "type": ["string","null"]
+    },
+
+    "service": {
+      "type": "string"
+    },
+
+    "commit_sha": {
+      "type": "string"
+    },
+
+    "environment": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "prod"
+      ]
+    },
+
+    "detected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "fixed",
+        "suppressed",
+        "false_positive"
+      ],
+      "default": "open"
+    },
+
+    "raw_scanner_output": {
+      "type": "object"
+    }
+  }
+}

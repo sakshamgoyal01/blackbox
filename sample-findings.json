@@ -1,0 +1,27 @@
+{
+  "findings": [
+    {
+      "finding_id": "11111111-1111-1111-1111-111111111111",
+      "source_tool": "semgrep",
+      "category": "sast",
+      "severity": "high",
+      "cve_id": null,
+      "epss_score": null,
+      "title": "Hardcoded Secret",
+      "description": "Test finding",
+      "file_path": "app/main.py",
+      "line_number": 10,
+      "package_name": null,
+      "package_version": null,
+      "fixed_version": null,
+      "service": "gate-service",
+      "commit_sha": "abc123",
+      "environment": "dev",
+      "detected_at": "2026-07-12T10:00:00Z",
+      "status": "open",
+      "raw_scanner_output": {
+        "tool": "semgrep"
+      }
+    }
+  ]
+}

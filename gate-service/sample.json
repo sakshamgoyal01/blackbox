@@ -1,0 +1,21 @@
+{
+  "finding_id": "550e8400-e29b-41d4-a716-446655440000",
+  "source_tool": "semgrep",
+  "category": "sast",
+  "severity": "high",
+  "cve_id": null,
+  "epss_score": null,
+  "title": "SQL Injection",
+  "description": "Potential SQL Injection detected.",
+  "file_path": "app/api/users.py",
+  "line_number": 42,
+  "package_name": null,
+  "package_version": null,
+  "fixed_version": null,
+  "service": "gate-service",
+  "commit_sha": "abc123def456",
+  "environment": "dev",
+  "detected_at": "2026-07-12T12:00:00Z",
+  "status": "open",
+  "raw_scanner_output": {}
+}
