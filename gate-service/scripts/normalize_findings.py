@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-
+import os
 from app.normalize.registry import get_adapter
 
 
@@ -45,9 +45,9 @@ def main():
             normalize_file(
                 tool,
                 filename,
-                service="gate-service",
-                commit_sha="abc123",
-                environment="dev",
+                SERVICE=os.environ["SERVICE_NAME"],
+        COMMIT_SHA = os.environ["COMMIT_SHA"],
+        ENVIRONMENT = os.environ["ENVIRONMENT"],
             )
         )
 
