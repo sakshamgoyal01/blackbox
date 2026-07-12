@@ -48,6 +48,9 @@ jobs:
           DATABASE_URL=postgresql://blackbox:blackbox@postgres:5432/blackbox
           BLACKBOX_API_KEY=${{ secrets.GATE_API_KEY }}
           GITHUB_TOKEN=${{ secrets.TOKEN_GITHUB }}
+          POSTGRES_DB=blackbox
+          POSTGRES_USER=blackbox
+          POSTGRES_PASSWORD=8929
           EOF
 
       - name: Start BLACKBOX stack
