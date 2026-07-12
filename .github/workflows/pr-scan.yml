@@ -40,6 +40,29 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Start BLACKBOX stack
+        run: |
+          docker compose up -d --build
+
+      - name: Wait for Gate Service
+        run: |
+          for i in {1..30}; do
+            if curl -fs http://localhost:8000/health; then
+              echo "Gate service is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+
+          echo "Gate service failed to start"
+          docker compose logs
+          exit 1
+
+      - name: Run Migrations
+        run: |
+         docker compose exec -T gate-service \
+           alembic upgrade head
+
       ##############################################################
       # Python
       ##############################################################
