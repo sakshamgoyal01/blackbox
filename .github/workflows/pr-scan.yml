@@ -1,6 +1,11 @@
-name: BLACKBOX PR Scan
+name: BLACKBOX PR Security Gate
 
 on:
+
+  push:
+    branches:
+      - "**"
+
   pull_request:
     branches:
       - main
@@ -9,59 +14,173 @@ permissions:
   contents: read
   pull-requests: write
 
+env:
+  SERVICE_NAME: gate-service
+  ENVIRONMENT: dev
+  GATE_URL: ${{ secrets.GATE_URL }}
+  GATE_API_KEY: ${{ secrets.GATE_API_KEY }}
+
 jobs:
+
   security-gate:
+
+    name: Scan → Normalize → Gate
+
     runs-on: ubuntu-latest
 
-    env:
-      GATE_URL: ${{ secrets.GATE_URL }}
-      GATE_API_KEY: ${{ secrets.GATE_API_KEY }}
-
     steps:
-      - uses: actions/checkout@v4
+
+      ##############################################################
+      # Checkout
+      ##############################################################
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      ##############################################################
+      # Python
+      ##############################################################
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      ##############################################################
+      # Install Dependencies
+      ##############################################################
+
+      - name: Install Gate Dependencies
+        working-directory: gate-service
         run: |
           python -m pip install --upgrade pip
-          pip install requests
-      - name: Trivy FS
-        uses: aquasecurity/trivy-action@master
+          pip install -r requirements.txt
+
+      ##############################################################
+      # Install Semgrep
+      ##############################################################
+
+      - name: Install Semgrep
+        run: |
+          pip install semgrep
+
+      ##############################################################
+      # Trivy Filesystem Scan
+      ##############################################################
+
+      - name: Trivy Filesystem Scan
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: fs
           format: json
           output: trivy.json
 
-      - name: Trivy Config
-        uses: aquasecurity/trivy-action@master
+      ##############################################################
+      # Trivy Config Scan
+      ##############################################################
+
+      - name: Trivy Config Scan
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: config
           format: json
           output: trivy-config.json
 
-      - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      ##############################################################
+      # Gitleaks
+      ##############################################################
 
-      - name: Semgrep
+      - name: Run Gitleaks
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            zricethezav/gitleaks:latest detect \
+            --source=/repo \
+            --report-format=json \
+            --report-path=/repo/gitleaks.json
 
-        uses: returntocorp/semgrep-action@v1
+      ##############################################################
+      # Semgrep
+      ##############################################################
+
+      - name: Run Semgrep
+        run: |
+          semgrep scan \
+            --config=auto \
+            --json \
+            --output semgrep.json
+
+      ##############################################################
+      # Move Reports
+      ##############################################################
+
+      - name: Copy Reports
+        run: |
+          mkdir -p gate-service/tests/data
+
+          cp trivy.json gate-service/tests/data/
+          cp trivy-config.json gate-service/tests/data/
+
+          cp gitleaks.json gate-service/tests/data/
+          cp semgrep.json gate-service/tests/data/
+
+      ##############################################################
+      # Normalize
+      ##############################################################
 
       - name: Normalize Findings
-
+        working-directory: gate-service
+        env:
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          COMMIT_SHA: ${{ github.sha }}
+          ENVIRONMENT: ${{ env.ENVIRONMENT }}
         run: |
-          python scripts/normalize_findings.py
+          python -m scripts.normalize_findings
+
+      ##############################################################
+      # Upload Findings
+      ##############################################################
 
       - name: Upload Findings
-
+        working-directory: gate-service
+        env:
+          GATE_URL: ${{ env.GATE_URL }}
+          GATE_API_KEY: ${{ env.GATE_API_KEY }}
         run: |
-          python scripts/send_findings.py
-          
-      - name: Evaluate Gate
+          python -m scripts.send_findings
 
+      ##############################################################
+      # Evaluate Gate
+      ##############################################################
+
+      - name: Evaluate Security Gate
+        working-directory: gate-service
+        env:
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          COMMIT_SHA: ${{ github.sha }}
+          GATE_URL: ${{ env.GATE_URL }}
+          GATE_API_KEY: ${{ env.GATE_API_KEY }}
         run: |
-          python scripts/evaluate_gate.py
-          
+          python -m scripts.evaluate_gate
+
+      ##############################################################
+      # Upload Reports
+      ##############################################################
+
+      - name: Upload Security Reports
+        if: always()
+
+        uses: actions/upload-artifact@v4
+
+        with:
+
+          name: blackbox-security-reports
+
+          path: |
+            trivy.json
+            trivy-config.json
+            semgrep.json
+            gitleaks.json
+            gate-service/normalized-findings.json
