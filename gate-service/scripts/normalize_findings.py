@@ -39,15 +39,19 @@ def main():
         ("semgrep", "semgrep.json"),
     ]
 
+    service = os.environ["SERVICE_NAME"]
+    commit_sha = os.environ["COMMIT_SHA"]
+    environment = os.environ["ENVIRONMENT"]
+
     for tool, filename in scanners:
 
         all_findings.extend(
             normalize_file(
-                tool,
-                filename,
-                SERVICE=os.environ["SERVICE_NAME"],
-        COMMIT_SHA = os.environ["COMMIT_SHA"],
-        ENVIRONMENT = os.environ["ENVIRONMENT"],
+                tool=tool,
+                filename=filename,
+                service=service,
+                commit_sha=commit_sha,
+                environment=environment,
             )
         )
 

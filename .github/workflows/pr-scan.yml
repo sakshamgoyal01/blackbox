@@ -17,6 +17,7 @@ permissions:
 env:
   SERVICE_NAME: gate-service
   ENVIRONMENT: dev
+  COMMIT_SHA: abc123
   GATE_URL: ${{ secrets.GATE_URL }}
   GATE_API_KEY: ${{ secrets.GATE_API_KEY }}
 
