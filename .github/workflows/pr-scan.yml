@@ -39,6 +39,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Create gate-service .env
+        run: |
+          cat > gate-service/.env <<EOF
+          DATABASE_URL=postgresql://blackbox:blackbox@postgres:5432/blackbox
+          BLACKBOX_API_KEY=${{ secrets.GATE_API_KEY }}
+          GITHUB_TOKEN=${{ secrets.TOKEN_GITHUB }}
+          EOF
 
       - name: Start BLACKBOX stack
         run: |
