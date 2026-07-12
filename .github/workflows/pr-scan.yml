@@ -69,24 +69,25 @@ jobs:
       ##############################################################
       # Trivy Filesystem Scan
       ##############################################################
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.70.0_Linux-64bit.deb
+          sudo dpkg -i trivy_0.70.0_Linux-64bit.deb
 
       - name: Trivy Filesystem Scan
-        uses: aquasecurity/trivy-action@v0
-        with:
-          scan-type: fs
-          format: json
-          output: trivy.json
-
-      ##############################################################
-      # Trivy Config Scan
-      ##############################################################
+        run: |
+          trivy fs \
+            --format json \
+            --output trivy.json \
+            .
 
       - name: Trivy Config Scan
-        uses: aquasecurity/trivy-action@v0
-        with:
-          scan-type: config
-          format: json
-          output: trivy-config.json
+        run: |
+          trivy config \
+            --format json \
+            --output trivy-config.json \
 
       ##############################################################
       # Gitleaks
