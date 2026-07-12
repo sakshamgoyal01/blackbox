@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from app.normalize import get_adapter
+from app.normalize.registry import get_adapter
 
 
 DATA_DIR = Path("tests/data")
@@ -20,10 +20,10 @@ def normalize_file(
         raw = json.load(f)
 
     findings = adapter.normalize(
-        raw=raw,
-        service=service,
-        commit_sha=commit_sha,
-        environment=environment,
+        raw,
+        service,
+        commit_sha,
+        environment,
     )
 
     return [finding.model_dump(mode="json") for finding in findings]
