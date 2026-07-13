@@ -17,6 +17,7 @@ permissions:
 env:
   SERVICE_NAME: gate-service
   ENVIRONMENT: dev
+  GATE_URL: http://localhost:8000
   COMMIT_SHA: abc123
   POSTGRES_DB: blackbox
   POSTGRES_USER: blackbox
