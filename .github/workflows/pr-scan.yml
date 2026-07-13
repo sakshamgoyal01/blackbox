@@ -208,7 +208,6 @@ jobs:
 
           cp trivy.json gate-service/tests/data/
           cp trivy-config.json gate-service/tests/data/
-          cp sbom/*.cdx.json gate-service/sbom/
 
           cp gitleaks.json gate-service/tests/data/
           cp semgrep.json gate-service/tests/data/
