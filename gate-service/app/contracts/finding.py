@@ -39,7 +39,15 @@ class FindingStatus(str, Enum):
 class CanonicalFinding(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
+    # ------------------------------------------------------------------
+    # Identity
+    # ------------------------------------------------------------------
+
     finding_id: UUID = Field(default_factory=uuid4)
+
+    # ------------------------------------------------------------------
+    # Scanner Metadata
+    # ------------------------------------------------------------------
 
     source_tool: SourceTool
 
@@ -47,9 +55,25 @@ class CanonicalFinding(BaseModel):
 
     severity: FindingSeverity
 
+    # ------------------------------------------------------------------
+    # Vulnerability Intelligence
+    # ------------------------------------------------------------------
+
     cve_id: str | None = None
 
+    # Added in Phase 1 (used in Phase 2)
     epss_score: float | None = None
+
+    # Added in Phase 2
+    kev_listed: bool = False
+
+    priority_score: float | None = None
+
+    enriched_at: datetime | None = None
+
+    # ------------------------------------------------------------------
+    # Finding Information
+    # ------------------------------------------------------------------
 
     title: str
 
@@ -65,6 +89,10 @@ class CanonicalFinding(BaseModel):
 
     fixed_version: str | None = None
 
+    # ------------------------------------------------------------------
+    # Repository Metadata
+    # ------------------------------------------------------------------
+
     service: str
 
     commit_sha: str
@@ -73,6 +101,14 @@ class CanonicalFinding(BaseModel):
 
     detected_at: datetime
 
+    # ------------------------------------------------------------------
+    # Lifecycle
+    # ------------------------------------------------------------------
+
     status: FindingStatus = FindingStatus.open
+
+    # ------------------------------------------------------------------
+    # Original Scanner Payload
+    # ------------------------------------------------------------------
 
     raw_scanner_output: dict[str, Any]
