@@ -3,6 +3,7 @@ import os
 
 import requests
 
+
 API_KEY = os.environ["GATE_API_KEY"]
 GATE_URL = os.environ["GATE_URL"]
 
@@ -12,17 +13,13 @@ def main():
     with open("normalized-findings.json") as f:
         findings = json.load(f)
 
-    payload = {
-        "findings": findings
-    }
-
     response = requests.post(
         f"{GATE_URL}/findings",
         headers={
             "X-API-Key": API_KEY,
             "Content-Type": "application/json",
         },
-        json=payload,
+        json=findings,
         timeout=30,
     )
 

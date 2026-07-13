@@ -1,16 +1,13 @@
 import os
 import sys
-
 import requests
-
 
 API_KEY = os.environ["GATE_API_KEY"]
 GATE_URL = os.environ["GATE_URL"]
 
-
 payload = {
-    "service": "gate-service",
-    "commit_sha": "abc123",
+    "service": os.environ["SERVICE_NAME"],
+    "commit_sha": os.environ["COMMIT_SHA"],
 }
 
 response = requests.post(
@@ -29,7 +26,4 @@ decision = response.json()
 
 print(decision)
 
-if decision["allowed"]:
-    sys.exit(0)
-
-sys.exit(1)
+sys.exit(0 if decision["allowed"] else 1)
