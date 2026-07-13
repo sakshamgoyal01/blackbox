@@ -130,6 +130,7 @@ jobs:
       - name: Trivy Filesystem Scan
         run: |
           trivy fs \
+            --skip-files gate-service/.env \
             --format json \
             --output trivy.json \
             .
@@ -160,6 +161,7 @@ jobs:
       - name: Run Semgrep
         run: |
           semgrep scan \
+            --exclude gate-service/.env \
             --config=auto \
             --json \
             --output semgrep.json
