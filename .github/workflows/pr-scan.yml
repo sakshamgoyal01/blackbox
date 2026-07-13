@@ -18,8 +18,6 @@ env:
   SERVICE_NAME: gate-service
   ENVIRONMENT: dev
   COMMIT_SHA: abc123
-  GATE_URL: ${{ secrets.GATE_URL }}
-  GATE_API_KEY: ${{ secrets.GATE_API_KEY }}
   POSTGRES_DB: blackbox
   POSTGRES_USER: blackbox
   POSTGRES_PASSWORD: 8929
@@ -197,6 +195,9 @@ jobs:
       # Upload Findings
       ##############################################################
       - name: Register Service
+        env:
+          GATE_URL: ${{ secrets.GATE_URL }}
+          GATE_API_KEY: ${{ secrets.GATE_API_KEY }}
         run: |
          curl -X POST http://localhost:8000/services \
          -H "Content-Type: application/json" \
