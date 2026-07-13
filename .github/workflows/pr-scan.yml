@@ -188,6 +188,8 @@ jobs:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
           COMMIT_SHA: ${{ github.sha }}
           ENVIRONMENT: ${{ env.ENVIRONMENT }}
+          GATE_URL: ${{ secrets.GATE_URL }}
+          GATE_API_KEY: ${{ secrets.GATE_API_KEY }}
         run: |
           python -m scripts.normalize_findings
 
