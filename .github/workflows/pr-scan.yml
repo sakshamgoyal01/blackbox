@@ -146,8 +146,17 @@ jobs:
       ##############################################################
       - name: Install Syft
         run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh \
-            | sh -s -- -b /usr/local/bin
+          SYFT_VERSION=v1.32.0
+
+          curl -L \
+            -o syft.tar.gz \
+            https://github.com/anchore/syft/releases/download/${SYFT_VERSION}/syft_${SYFT_VERSION#v}_linux_amd64.tar.gz
+
+          tar -xzf syft.tar.gz
+
+          sudo mv syft /usr/local/bin/
+
+          syft version
           
       - name: Generate SBOM
         run: |
