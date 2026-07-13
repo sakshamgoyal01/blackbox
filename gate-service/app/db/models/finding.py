@@ -2,6 +2,7 @@ import enum
 import uuid
 from datetime import datetime
 
+from sqlalchemy import Boolean
 from sqlalchemy import DateTime
 from sqlalchemy import Enum
 from sqlalchemy import Float
@@ -62,6 +63,10 @@ class Finding(Base):
         ),
     )
 
+    # ==========================================================
+    # Identity
+    # ==========================================================
+
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         primary_key=True,
@@ -74,6 +79,10 @@ class Finding(Base):
         nullable=False,
         default=uuid.uuid4,
     )
+
+    # ==========================================================
+    # Scanner Metadata
+    # ==========================================================
 
     source_tool: Mapped[FindingSource] = mapped_column(
         Enum(FindingSource, name="finding_source_enum"),
@@ -90,6 +99,10 @@ class Finding(Base):
         nullable=False,
     )
 
+    # ==========================================================
+    # Threat Intelligence (Phase 2)
+    # ==========================================================
+
     cve_id: Mapped[str | None] = mapped_column(
         String(50),
         nullable=True,
@@ -99,6 +112,27 @@ class Finding(Base):
         Float,
         nullable=True,
     )
+
+    kev_listed: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+        server_default="false",
+    )
+
+    priority_score: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
+    )
+
+    enriched_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
+    # ==========================================================
+    # Finding Details
+    # ==========================================================
 
     title: Mapped[str] = mapped_column(
         String(500),
@@ -135,6 +169,10 @@ class Finding(Base):
         nullable=True,
     )
 
+    # ==========================================================
+    # Repository Metadata
+    # ==========================================================
+
     service: Mapped[str] = mapped_column(
         String(100),
         nullable=False,
@@ -155,16 +193,28 @@ class Finding(Base):
         nullable=False,
     )
 
+    # ==========================================================
+    # Lifecycle
+    # ==========================================================
+
     status: Mapped[FindingStatus] = mapped_column(
         Enum(FindingStatus, name="finding_status_enum"),
         nullable=False,
         default=FindingStatus.open,
     )
 
+    # ==========================================================
+    # Original Scanner Payload
+    # ==========================================================
+
     raw_scanner_output: Mapped[dict] = mapped_column(
         JSONB,
         nullable=False,
     )
+
+    # ==========================================================
+    # Audit
+    # ==========================================================
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

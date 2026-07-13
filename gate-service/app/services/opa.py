@@ -4,6 +4,7 @@ import tempfile
 
 
 def _opa_eval(query: str, input_file: str):
+
     result = subprocess.run(
         [
             "opa",
@@ -18,12 +19,36 @@ def _opa_eval(query: str, input_file: str):
         ],
         capture_output=True,
         text=True,
-        check=True,
     )
+
+    print("\n================ OPA QUERY ================")
+    print(query)
+
+    print("\n================ STDOUT ===================")
+    print(result.stdout)
+
+    print("\n================ STDERR ===================")
+    print(result.stderr)
+
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr)
 
     output = json.loads(result.stdout)
 
-    return output["result"][0]["expressions"][0]["value"]
+    if "errors" in output:
+        raise RuntimeError(
+            json.dumps(output["errors"], indent=2)
+        )
+
+    if "result" not in output:
+        return False if query.endswith(".allow") else []
+
+    expressions = output["result"][0]["expressions"]
+
+    if not expressions:
+        return None
+
+    return expressions[0].get("value")
 
 
 def evaluate_policy(
@@ -49,9 +74,12 @@ def evaluate_policy(
         input_file,
     )
 
-    violations = _opa_eval(
-        "data.blackbox.violations",
-        input_file,
+    violations = (
+        _opa_eval(
+            "data.blackbox.violations",
+            input_file,
+        )
+        or []
     )
 
     return allow, violations
