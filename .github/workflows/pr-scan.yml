@@ -45,7 +45,7 @@ jobs:
       - name: Create gate-service .env
         run: |
           cat > gate-service/.env <<EOF
-          DATABASE_URL=postgresql://blackbox:blackbox@postgres:5432/blackbox
+          DATABASE_URL=postgresql://blackbox:8929@postgres:5432/blackbox
           BLACKBOX_API_KEY=${{ secrets.GATE_API_KEY }}
           GITHUB_TOKEN=${{ secrets.TOKEN_GITHUB }}
           POSTGRES_DB=blackbox
