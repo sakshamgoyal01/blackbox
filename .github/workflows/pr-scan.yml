@@ -194,7 +194,17 @@ jobs:
       ##############################################################
       # Upload Findings
       ##############################################################
-
+      - name: Register Service
+        run: |
+         curl -X POST http://localhost:8000/services \
+         -H "Content-Type: application/json" \
+         -H "X-API-Key: ${{ secrets.GATE_API_KEY }}" \
+         -d '{
+          "name":"gate-service",
+          "repository":"blackbox",
+          "criticality_tier":"tier2",
+          "environment":"dev"
+         }'
       - name: Upload Findings
         working-directory: gate-service
         env:
