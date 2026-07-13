@@ -27,7 +27,6 @@ services:
       retries: 10
 
   gate-service:
-
     build:
       context: ./gate-service
 
@@ -44,6 +43,9 @@ services:
 
     ports:
       - "8000:8000"
+
+    volumes:
+      - ./gate-service:/app
 
 volumes:
   postgres-data:

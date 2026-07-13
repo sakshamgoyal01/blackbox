@@ -1,0 +1,284 @@
+[
+  {
+    "finding_id": "d1fda197-13e1-45ca-8dcf-9c2985923562",
+    "source_tool": "trivy",
+    "category": "secret",
+    "severity": "critical",
+    "cve_id": null,
+    "epss_score": null,
+    "title": "GitHub Fine-grained personal access tokens",
+    "description": "github-fine-grained-pat",
+    "file_path": "gate-service/.env",
+    "line_number": 5,
+    "package_name": null,
+    "package_version": null,
+    "fixed_version": null,
+    "service": "gate-service",
+    "commit_sha": "local-test",
+    "environment": "dev",
+    "detected_at": "2026-07-13T02:33:06.137728Z",
+    "status": "open",
+    "raw_scanner_output": {
+      "RuleID": "github-fine-grained-pat",
+      "Category": "GitHub",
+      "Severity": "CRITICAL",
+      "Title": "GitHub Fine-grained personal access tokens",
+      "StartLine": 5,
+      "EndLine": 5,
+      "Code": {
+        "Lines": [
+          {
+            "Number": 3,
+            "Content": "BLACKBOX_API_KEY=dnfkdfjaf422nfr3nrn34j5344f3rf",
+            "IsCause": false,
+            "Annotation": "",
+            "Truncated": false,
+            "Highlighted": "BLACKBOX_API_KEY=dnfkdfjaf422nfr3nrn34j5344f3rf",
+            "FirstCause": false,
+            "LastCause": false
+          },
+          {
+            "Number": 4,
+            "Content": "",
+            "IsCause": false,
+            "Annotation": "",
+            "Truncated": false,
+            "FirstCause": false,
+            "LastCause": false
+          },
+          {
+            "Number": 5,
+            "Content": "GITHUB_TOKEN=*********************************************************************************************",
+            "IsCause": true,
+            "Annotation": "",
+            "Truncated": false,
+            "Highlighted": "GITHUB_TOKEN=*********************************************************************************************",
+            "FirstCause": true,
+            "LastCause": true
+          }
+        ]
+      },
+      "Match": "GITHUB_TOKEN=*********************************************************************************************",
+      "Offset": 126
+    }
+  },
+  {
+    "finding_id": "f2de927e-210f-46d7-98ca-134e4c849522",
+    "source_tool": "semgrep",
+    "category": "sast",
+    "severity": "high",
+    "cve_id": null,
+    "epss_score": null,
+    "title": "yaml.docker-compose.security.no-new-privileges.no-new-privileges",
+    "description": "Service 'postgres' allows for privilege escalation via setuid or setgid binaries. Add 'no-new-privileges:true' in 'security_opt' to prevent this.",
+    "file_path": "docker-compose.yml",
+    "line_number": 5,
+    "package_name": null,
+    "package_version": null,
+    "fixed_version": null,
+    "service": "gate-service",
+    "commit_sha": "local-test",
+    "environment": "dev",
+    "detected_at": "2026-07-13T02:33:06.144358Z",
+    "status": "open",
+    "raw_scanner_output": {
+      "check_id": "yaml.docker-compose.security.no-new-privileges.no-new-privileges",
+      "path": "docker-compose.yml",
+      "start": {
+        "line": 5,
+        "col": 3,
+        "offset": 29
+      },
+      "end": {
+        "line": 5,
+        "col": 11,
+        "offset": 37
+      },
+      "extra": {
+        "message": "Service 'postgres' allows for privilege escalation via setuid or setgid binaries. Add 'no-new-privileges:true' in 'security_opt' to prevent this.",
+        "metadata": {
+          "cwe": [
+            "CWE-732: Incorrect Permission Assignment for Critical Resource"
+          ],
+          "owasp": [
+            "A05:2021 - Security Misconfiguration",
+            "A06:2017 - Security Misconfiguration",
+            "A02:2025 - Security Misconfiguration"
+          ],
+          "references": [
+            "https://raesene.github.io/blog/2019/06/01/docker-capabilities-and-no-new-privs/",
+            "https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html#rule-4-add-no-new-privileges-flag"
+          ],
+          "category": "security",
+          "technology": [
+            "docker-compose"
+          ],
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "HIGH",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/yaml.docker-compose.security.no-new-privileges.no-new-privileges",
+          "shortlink": "https://sg.run/0n8q"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "finding_id": "ff6bf25b-b34c-4269-963d-ad281fe081d3",
+    "source_tool": "semgrep",
+    "category": "sast",
+    "severity": "high",
+    "cve_id": null,
+    "epss_score": null,
+    "title": "yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service",
+    "description": "Service 'postgres' is running with a writable root filesystem. This may allow malicious applications to download and run additional payloads, or modify container files. If an application inside a container has to save something temporarily consider using a tmpfs. Add 'read_only: true' to this service to prevent this.",
+    "file_path": "docker-compose.yml",
+    "line_number": 5,
+    "package_name": null,
+    "package_version": null,
+    "fixed_version": null,
+    "service": "gate-service",
+    "commit_sha": "local-test",
+    "environment": "dev",
+    "detected_at": "2026-07-13T02:33:06.144371Z",
+    "status": "open",
+    "raw_scanner_output": {
+      "check_id": "yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service",
+      "path": "docker-compose.yml",
+      "start": {
+        "line": 5,
+        "col": 3,
+        "offset": 29
+      },
+      "end": {
+        "line": 5,
+        "col": 11,
+        "offset": 37
+      },
+      "extra": {
+        "message": "Service 'postgres' is running with a writable root filesystem. This may allow malicious applications to download and run additional payloads, or modify container files. If an application inside a container has to save something temporarily consider using a tmpfs. Add 'read_only: true' to this service to prevent this.",
+        "metadata": {
+          "cwe": [
+            "CWE-732: Incorrect Permission Assignment for Critical Resource"
+          ],
+          "owasp": [
+            "A05:2021 - Security Misconfiguration",
+            "A06:2017 - Security Misconfiguration",
+            "A02:2025 - Security Misconfiguration"
+          ],
+          "references": [
+            "https://docs.docker.com/compose/compose-file/compose-file-v3/#domainname-hostname-ipc-mac_address-privileged-read_only-shm_size-stdin_open-tty-user-working_dir",
+            "https://blog.atomist.com/security-of-docker-kubernetes/",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html#rule-8-set-filesystem-and-volumes-to-read-only"
+          ],
+          "category": "security",
+          "technology": [
+            "docker-compose"
+          ],
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "HIGH",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service",
+          "shortlink": "https://sg.run/e4JE"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "finding_id": "00fb285e-ec8d-4d63-bf1f-ca63aa8b396e",
+    "source_tool": "semgrep",
+    "category": "sast",
+    "severity": "critical",
+    "cve_id": null,
+    "epss_score": null,
+    "title": "dockerfile.security.missing-user.missing-user",
+    "description": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
+    "file_path": "gate-service/Dockerfile",
+    "line_number": 16,
+    "package_name": null,
+    "package_version": null,
+    "fixed_version": null,
+    "service": "gate-service",
+    "commit_sha": "local-test",
+    "environment": "dev",
+    "detected_at": "2026-07-13T02:33:06.144376Z",
+    "status": "open",
+    "raw_scanner_output": {
+      "check_id": "dockerfile.security.missing-user.missing-user",
+      "path": "gate-service/Dockerfile",
+      "start": {
+        "line": 16,
+        "col": 1,
+        "offset": 191
+      },
+      "end": {
+        "line": 16,
+        "col": 71,
+        "offset": 261
+      },
+      "extra": {
+        "message": "By not specifying a USER, a program in the container may run as 'root'. This is a security hazard. If an attacker can control a process running as root, they may have control over the container. Ensure that the last USER in a Dockerfile is a USER other than 'root'.",
+        "fix": "USER non-root\nCMD [\"uvicorn\", \"app.main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]",
+        "metadata": {
+          "cwe": [
+            "CWE-250: Execution with Unnecessary Privileges"
+          ],
+          "category": "security",
+          "technology": [
+            "dockerfile"
+          ],
+          "confidence": "MEDIUM",
+          "owasp": [
+            "A04:2021 - Insecure Design",
+            "A06:2025 - Insecure Design"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A04_2021-Insecure_Design"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Authorization"
+          ],
+          "source": "https://semgrep.dev/r/dockerfile.security.missing-user.missing-user",
+          "shortlink": "https://sg.run/Gbvn"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  }
+]
