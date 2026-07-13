@@ -58,11 +58,37 @@
     },
 
     "cve_id": {
-      "type": ["string","null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
 
     "epss_score": {
-      "type": ["number","null"]
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+
+    "kev_listed": {
+      "type": "boolean",
+      "default": false
+    },
+
+    "priority_score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+
+    "enriched_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
     },
 
     "title": {
@@ -74,23 +100,38 @@
     },
 
     "file_path": {
-      "type": ["string","null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
 
     "line_number": {
-      "type": ["integer","null"]
+      "type": [
+        "integer",
+        "null"
+      ]
     },
 
     "package_name": {
-      "type": ["string","null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
 
     "package_version": {
-      "type": ["string","null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
 
     "fixed_version": {
-      "type": ["string","null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
 
     "service": {
