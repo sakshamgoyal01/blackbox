@@ -144,6 +144,19 @@ jobs:
       ##############################################################
       # Gitleaks
       ##############################################################
+      - name: Install Syft
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh \
+            | sh -s -- -b /usr/local/bin
+          
+      - name: Generate SBOM
+        run: |
+          mkdir -p sbom
+
+          syft . \
+            -o cyclonedx-json \
+            > sbom/${{ env.SERVICE_NAME }}-${{ github.sha }}.cdx.json
+          
 
       - name: Run Gitleaks
         run: |
@@ -195,6 +208,7 @@ jobs:
 
           cp trivy.json gate-service/tests/data/
           cp trivy-config.json gate-service/tests/data/
+          cp sbom/*.cdx.json gate-service/sbom/
 
           cp gitleaks.json gate-service/tests/data/
           cp semgrep.json gate-service/tests/data/
@@ -291,3 +305,4 @@ jobs:
             semgrep.json
             gitleaks.json
             gate-service/normalized-findings.json
+            sbom/
