@@ -169,24 +169,26 @@ jobs:
       ##############################################################
       # Move Reports
       ##############################################################
-      - name: Show mutable action finding
+      - name: Show GitHub Action findings
         run: |
          python - <<'PY'
          import json
 
          with open("semgrep.json") as f:
-         data = json.load(f)
+            data = json.load(f)
 
          for r in data.get("results", []):
-            if "github-actions-mutable-action-tag" in r.get("check_id", ""):
-               print("=" * 80)
-               print("CHECK :", r["check_id"])
-               print("FILE  :", r["path"])
-               print("LINE  :", r["start"]["line"])
-               print("CODE  :")
-               print(r["extra"]["lines"])
-               print("=" * 80)
+           if "github-actions" in r.get("check_id", ""):
+              print("=" * 100)
+              print("CHECK :", r["check_id"])
+              print("FILE  :", r["path"])
+              print("LINE  :", r["start"]["line"])
+              print("MESSAGE:", r["extra"].get("message"))
+              print("CODE:")
+              print(r["extra"]["lines"])
+              print("=" * 100)
          PY
+    
       - name: Copy Reports
         run: |
           mkdir -p gate-service/tests/data
