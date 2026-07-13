@@ -257,6 +257,24 @@ jobs:
       ##############################################################
       # Upload Reports
       ##############################################################
+      - name: Update PR Security Comment
+        if: github.event_name == 'pull_request'
+        working-directory: gate-service
+
+        env:
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          COMMIT_SHA: ${{ github.sha }}
+
+          GATE_URL: ${{ env.GATE_URL }}
+          GATE_API_KEY: ${{ env.GATE_API_KEY }}
+
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+        run: |
+          python -m scripts.pr_comment
+          
 
       - name: Upload Security Reports
         if: always()
