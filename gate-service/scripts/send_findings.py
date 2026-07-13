@@ -3,7 +3,6 @@ import os
 
 import requests
 
-
 API_KEY = os.environ["GATE_API_KEY"]
 GATE_URL = os.environ["GATE_URL"]
 
@@ -14,7 +13,7 @@ def main():
         findings = json.load(f)
 
     payload = {
-        "findings": findings,
+        "findings": findings
     }
 
     response = requests.post(
