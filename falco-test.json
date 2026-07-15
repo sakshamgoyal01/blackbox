@@ -1,0 +1,14 @@
+{
+  "hostname": "temp-inspect-control-plane",
+  "rule": "Terminal shell in container",
+  "priority": "Notice",
+  "output": "A shell was spawned in a container with an attached terminal",
+  "source": "syscall",
+  "time": "2026-07-14T05:59:28.335767148Z",
+  "output_fields": {
+    "container.id": "32b8732aa93a",
+    "container.name": "nginx",
+    "k8s.ns.name": "default",
+    "k8s.pod.name": "nginx-b6485fcbb-8qftp"
+  }
+}

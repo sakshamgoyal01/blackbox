@@ -1,7 +1,7 @@
 import enum
 import uuid
 from datetime import datetime
-
+from sqlalchemy import Text
 from sqlalchemy import Boolean
 from sqlalchemy import DateTime
 from sqlalchemy import Enum
@@ -122,6 +122,15 @@ class Finding(Base):
 
     priority_score: Mapped[float | None] = mapped_column(
         Float,
+        nullable=True,
+    )
+    scanner_url: Mapped[str | None] = mapped_column(
+        String(1000),
+        nullable=True,
+    )
+
+    remediation_summary: Mapped[str | None] = mapped_column(
+        Text,
         nullable=True,
     )
 

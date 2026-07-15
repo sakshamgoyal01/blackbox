@@ -1,0 +1,11 @@
+falcosidekick:
+  enabled: true
+
+  webui:
+    enabled: false
+
+  config:
+    webhook:
+      address: "http://host.docker.internal:8000/runtime-events"
+      method: "POST"
+      customHeaders: "X-API-Key:dnfkdfjaf422nfr3nrn34j5344f3rf"

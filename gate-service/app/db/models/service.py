@@ -1,7 +1,7 @@
 import enum
 import uuid
 from datetime import datetime
-
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy import DateTime, Enum, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
@@ -59,4 +59,42 @@ class Service(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         nullable=False,
+    )
+    k8s_namespace: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+    description: Mapped[str | None] = mapped_column(
+        String(1000),
+        nullable=True,
+    )
+
+    language: Mapped[str | None] = mapped_column(
+        String(50),
+        nullable=True,
+    )
+
+    framework: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    deployment_type: Mapped[str | None] = mapped_column(
+        String(50),
+        nullable=True,
+    )
+
+    slack_channel: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    runbook_url: Mapped[str | None] = mapped_column(
+        String(500),
+        nullable=True,
+    )
+
+    tags: Mapped[list[str] | None] = mapped_column(
+        JSONB,
+        nullable=True,
     )

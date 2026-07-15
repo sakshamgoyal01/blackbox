@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-
+from sqlalchemy import Text
 from sqlalchemy import Boolean
 from sqlalchemy import DateTime
 from sqlalchemy import Index
@@ -54,6 +54,36 @@ class PolicyDecision(Base):
     tier_at_decision: Mapped[str] = mapped_column(
         String(50),
         nullable=False,
+    )
+    policy_name: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+
+    policy_description: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    recommendation: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    documentation_url: Mapped[str | None] = mapped_column(
+        String(1000),
+        nullable=True,
+    )
+
+    evaluated_resource: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+
+    policy_metadata: Mapped[dict | None] = mapped_column(
+        "metadata",
+        JSONB,
+        nullable=True,
     )
 
     decided_at: Mapped[datetime] = mapped_column(
